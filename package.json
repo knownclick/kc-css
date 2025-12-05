@@ -1,16 +1,18 @@
 {
   "name": "kc-css",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A modern, efficient CSS framework tailored for SvelteKit.",
-  "main": "dist/game.css",
+  "main": "dist/kc.css",
+  "style": "dist/kc.css",
   "exports": {
     ".": "./src/main.scss",
-    "./css": "./dist/game.css",
-    "./src/*": "./src/*"
+    "./css": "./dist/kc.css",
+    "./min": "./dist/kc.min.css"
   },
   "scripts": {
-    "build": "sass src/main.scss dist/game.css",
-    "watch": "sass --watch src/main.scss dist/game.css"
+    "build": "sass src/main.scss dist/kc.css",
+    "build:min": "sass src/main.scss dist/kc.min.css --style compressed",
+    "prepublishOnly": "npm run build && npm run build:min"
   },
   "keywords": [
     "css",

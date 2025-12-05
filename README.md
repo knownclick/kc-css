@@ -4,7 +4,7 @@ A modern, efficient CSS framework tailored for SvelteKit.
 
 ## Installation
 
-Install the package via npm:
+Install the package via npm: (coming soon)
 
 ```bash
 npm install kc-css
