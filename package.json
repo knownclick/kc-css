@@ -1,6 +1,6 @@
 {
   "name": "kf-css",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A modern, efficient CSS framework tailored for SvelteKit.",
   "main": "dist/kf.css",
   "style": "dist/kf.css",

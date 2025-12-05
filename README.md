@@ -39,9 +39,9 @@ import "./kf-css/main.scss"; // Adjust path as needed
 
 You now own the code! Explore the `kf-css` folder:
 
-- `src/config/`: Update colors, typography, and spacing variables here.
-- `src/components/`: Add or modify component styles.
-- `src/main.scss`: Toggle modules on or off.
+- `config/`: Update colors, typography, and spacing variables here.
+- `components/`: Add or modify component styles.
+- `main.scss`: Toggle modules on or off.
 
 ## Post-Processing (Optimization)
 
