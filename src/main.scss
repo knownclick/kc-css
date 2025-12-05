@@ -85,15 +85,15 @@
 }
 
 // 2. Set Color Scheme
-html.kc-theme-dark {
+html.kf-theme-dark {
   color-scheme: dark;
 }
 
 // 3. Generate Root Variables (Light Mode / Default)
 :root,
-:root.kc-theme-dark .theme-inverted,
-:root.kc-theme-dark .theme-always-light,
-:root.kc-theme-light .theme-inverted .theme-always-light {
+:root.kf-theme-dark .theme-inverted,
+:root.kf-theme-dark .theme-always-light,
+:root.kf-theme-light .theme-inverted .theme-always-light {
   @each $name, $props in config-colors.$theme-colors {
     // Merge specific props with global defaults
     $config: map.merge(config-colors.$defaults, $props);
@@ -102,10 +102,10 @@ html.kc-theme-dark {
 }
 
 // 4. Generate Dark Mode Variables
-:root.kc-theme-dark,
-:root.kc-theme-light .theme-inverted,
-:root.kc-theme-light .theme-always-dark,
-:root.kc-theme-dark .theme-inverted .theme-always-dark {
+:root.kf-theme-dark,
+:root.kf-theme-light .theme-inverted,
+:root.kf-theme-light .theme-always-dark,
+:root.kf-theme-dark .theme-inverted .theme-always-dark {
   @each $name, $props in config-colors.$theme-colors {
     $config: map.merge(config-colors.$defaults, $props);
 

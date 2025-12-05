@@ -1,6 +1,6 @@
 {
   "name": "kf-css",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A modern, efficient CSS framework tailored for SvelteKit.",
   "main": "dist/kf.css",
   "style": "dist/kf.css",
@@ -24,7 +24,7 @@
     "framework",
     "design-system"
   ],
-  "author": "KC-CSS Contributors",
+  "author": "KF-CSS Contributors",
   "license": "MIT",
   "devDependencies": {
     "sass": "^1.81.0"
