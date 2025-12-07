@@ -3,7 +3,7 @@
 # kf-css
 
 **A modern, efficient CSS framework tailored for SvelteKit.**  
-_Lightweight. Semantic. Customizable._
+_Semantic. Customizable. Lightweight (with PurgeCSS)._
 
 </div>
 
