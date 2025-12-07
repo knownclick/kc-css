@@ -21,12 +21,20 @@ _Lightweight. Semantic. Customizable._
 
 ## 📦 Installation
 
-**Using the CLI (Recommended)**
+**Option 1: Scaffold (Recommended for SvelteKit)**
 
-Run the setup wizard to scaffold `kf-css` into your project:
+Run the setup wizard to copy the source files and build scripts into your project. This gives you full control and enables the auto-responsive generator.
 
 ```bash
 npx kf-css
+```
+
+**Option 2: Install as Dependency**
+
+Install the package to use the pre-built CSS or Sass files directly from `node_modules`.
+
+```bash
+npm install kf-css
 ```
 
 This will:
