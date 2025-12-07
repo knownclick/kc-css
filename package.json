@@ -10,10 +10,11 @@
   "exports": {
     ".": "./src/main.scss",
     "./css": "./dist/kf.css",
-    "./min": "./dist/kf.min.css"
+    "./min": "./dist/kf.min.css",
+    "./svelte": "./src/svelte/responsive.js"
   },
   "scripts": {
-    "build": "sass src/main.scss dist/kf.css",
+    "build": "sass src/main.scss dist/kf.css && node bin/mirror.js dist/kf.css dist/kf-responsive.css",
     "build:min": "sass src/main.scss dist/kf.min.css --style compressed",
     "prepublishOnly": "npm run build && npm run build:min"
   },

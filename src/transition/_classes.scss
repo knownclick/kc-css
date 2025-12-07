@@ -1,13 +1,13 @@
 @use "sass:map";
 
-@mixin generate-classes($config, $prefix: "") {
+@mixin generate-classes($config) {
   $durations: map.get($config, "durations");
   $easings: map.get($config, "easings");
   $properties: map.get($config, "properties");
 
   // Generates: .transition-all, .transition-colors...
   @each $name, $value in $properties {
-    .#{$prefix}transition-#{$name} {
+    .transition-#{$name} {
       transition-property: #{$value};
       // Set defaults upon activation if not redundant
       @if $name != "none" {
@@ -19,21 +19,21 @@
 
   // Generates: .duration-75, .duration-100...
   @each $name, $value in $durations {
-    .#{$prefix}duration-#{$name} {
+    .duration-#{$name} {
       transition-duration: var(--duration-#{$name});
     }
   }
 
   // Generates: .ease-linear, .ease-in...
   @each $name, $value in $easings {
-    .#{$prefix}ease-#{$name} {
+    .ease-#{$name} {
       transition-timing-function: var(--ease-#{$name});
     }
   }
 
   // Generates: .delay-75, .delay-100...
   @each $name, $value in $durations {
-    .#{$prefix}delay-#{$name} {
+    .delay-#{$name} {
       transition-delay: var(--duration-#{$name});
     }
   }

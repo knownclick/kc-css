@@ -9,3 +9,10 @@ $card-padding: var(--space-l);
 $card-radius: var(--radius-l);
 $card-border: 1px solid var(--muted-20);
 $card-shadow: var(--shadow-m);
+
+// Hook for responsive custom classes
+// This is called inside the main responsive loop
+@mixin responsive-custom($bp) {
+  // Example:
+  // .my-custom-component { ... }
+}

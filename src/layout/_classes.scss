@@ -1,6 +1,6 @@
 @use "sass:map";
 
-@mixin generate-classes($config, $prefix: "") {
+@mixin generate-classes($config) {
   $utility-values: map.get($config, "utility-values");
   $compound-utilities: map.get($config, "compound-utilities");
   $grid-columns: map.get($config, "grid-columns");
@@ -11,7 +11,8 @@
   @if $utility-values {
     @each $property, $values in $utility-values {
       @each $class, $value in $values {
-        .#{$prefix}#{$class} {
+        // Generates: .#{$prefix}#{$class}
+        .#{$class} {
           #{$property}: #{$value};
         }
       }
@@ -21,7 +22,7 @@
   // Generates: .flex-row, .flex-col, .row, .col
   @if $compound-utilities {
     @each $class, $props in $compound-utilities {
-      .#{$prefix}#{$class} {
+      .#{$class} {
         @each $prop, $val in $props {
           #{$prop}: #{$val};
         }
@@ -31,7 +32,8 @@
 
   // Generates: .columns-1 to .columns-8
   @for $i from 1 through $grid-columns {
-    .#{$prefix}columns-#{$i} {
+    $class: "columns-#{$i}";
+    .#{$class} {
       display: grid;
       --columns: #{$i};
       grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
@@ -40,7 +42,8 @@
 
   // Generates: .columns-min-* (e.g., .columns-min-20)
   @each $size in $grid-auto-sizes {
-    .#{$prefix}columns-min-#{$size} {
+    $class: "columns-min-#{$size}";
+    .#{$class} {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(#{$size}rem, 1fr));
     }
@@ -48,135 +51,179 @@
 
   // Generates: .col-span-*, .col-start-*, .row-span-*, .row-start-*
   @for $i from 1 through $grid-columns {
-    .#{$prefix}col-span-#{$i} {
-      grid-column: auto / span $i;
-    }
-    .#{$prefix}col-start-#{$i} {
-      grid-column-start: $i;
-    }
+    // Defines a map of class suffixes -> properties to Loop over inside the numeric loop
+    $span-classes: (
+      "col-span-#{$i}": (
+        grid-column: auto / span $i,
+      ),
+      "col-start-#{$i}": (
+        grid-column-start: $i,
+      ),
+      "row-span-#{$i}": (
+        grid-row: auto / span $i,
+      ),
+      "row-start-#{$i}": (
+        grid-row-start: $i,
+      ),
+    );
 
-    .#{$prefix}row-span-#{$i} {
-      grid-row: auto / span $i;
-    }
-    .#{$prefix}row-start-#{$i} {
-      grid-row-start: $i;
+    @each $cls, $props in $span-classes {
+      .#{$cls} {
+        @each $prop, $val in $props {
+          #{$prop}: #{$val};
+        }
+      }
     }
   }
-  .#{$prefix}col-span-full {
+
+  // col-span-full
+  $full-class: "col-span-full";
+  .#{$full-class} {
     grid-column: 1 / -1;
   }
 
   // Generates: .width-10 to .width-100
   @for $i from 1 through 9 {
-    .#{$prefix}width-#{$i}0 {
+    $class: "width-#{$i}0";
+    .#{$class} {
       width: $i * 10%;
     }
   }
-  .#{$prefix}width-33 {
-    width: 33.3333%;
-  }
-  .#{$prefix}width-66 {
-    width: 66.6666%;
-  }
-  .#{$prefix}width-100 {
-    width: 100%;
-  }
-  .#{$prefix}height-100 {
-    height: 100%;
+
+  // Specific widths and heights
+  $size-utils: (
+    "width-33": (
+      width: 33.3333%,
+    ),
+    "width-66": (
+      width: 66.6666%,
+    ),
+    "width-100": (
+      width: 100%,
+    ),
+    "height-100": (
+      height: 100%,
+    ),
+  );
+
+  @each $cls, $props in $size-utils {
+    .#{$cls} {
+      @each $prop, $val in $props {
+        #{$prop}: #{$val};
+      }
+    }
   }
 
   // Generates: .order-* (.order-1, .order-first, .order-last)
   @if $order-count > 0 {
     @for $i from 1 through $order-count {
-      .#{$prefix}order-#{$i} {
+      $class: "order-#{$i}";
+      .#{$class} {
         order: $i;
       }
     }
   }
-  .#{$prefix}order-first {
-    order: -9999;
-  }
-  .#{$prefix}order-last {
-    order: 9999;
-  }
-  .#{$prefix}order-none {
-    order: 0;
+
+  $order-utils: (
+    "order-first": (
+      order: -9999,
+    ),
+    "order-last": (
+      order: 9999,
+    ),
+    "order-none": (
+      order: 0,
+    ),
+  );
+
+  @each $cls, $props in $order-utils {
+    .#{$cls} {
+      @each $prop, $val in $props {
+        #{$prop}: #{$val};
+      }
+    }
   }
 
   // Generates: .items-*, .content-*, .self-* (Flex/Grid Alignment)
-  // Items (Parent)
-  .#{$prefix}items-start {
-    align-items: start;
-    justify-items: start;
-  }
-  .#{$prefix}items-center {
-    align-items: center;
-    justify-items: center;
-  }
-  .#{$prefix}items-end {
-    align-items: end;
-    justify-items: end;
-  }
-  .#{$prefix}items-stretch {
-    align-items: stretch;
-    justify-items: stretch;
-  }
+  // Generates: .items-*, .content-*, .self-* (Flex/Grid Alignment)
+  $alignment-classes: (
+    "items-start": (
+      align-items: start,
+      justify-items: start,
+    ),
+    "items-center": (
+      align-items: center,
+      justify-items: center,
+    ),
+    "items-end": (
+      align-items: end,
+      justify-items: end,
+    ),
+    "items-stretch": (
+      align-items: stretch,
+      justify-items: stretch,
+    ),
+    "content-start": (
+      align-content: start,
+      justify-content: start,
+    ),
+    "content-center": (
+      align-content: center,
+      justify-content: center,
+    ),
+    "content-end": (
+      align-content: end,
+      justify-content: end,
+    ),
+    "content-between": (
+      align-content: space-between,
+      justify-content: space-between,
+    ),
+    "content-around": (
+      align-content: space-around,
+      justify-content: space-around,
+    ),
+    "self-left": (
+      align-self: start,
+      place-self: start,
+      margin-inline-end: auto,
+    ),
+    "self-center": (
+      align-self: center,
+      place-self: center,
+      margin-inline: auto,
+    ),
+    "self-right": (
+      align-self: end,
+      place-self: end,
+      margin-inline-start: auto,
+    ),
+    "self-top": (
+      align-self: start,
+      place-self: start,
+      margin-bottom: auto,
+    ),
+    "self-middle": (
+      align-self: center,
+      place-self: center,
+      margin-block: auto,
+    ),
+    "self-bottom": (
+      align-self: end,
+      place-self: end,
+      margin-top: auto,
+    ),
+    "self-stretch": (
+      align-self: stretch,
+      place-self: stretch,
+    ),
+  );
 
-  // Content (Parent)
-  .#{$prefix}content-start {
-    align-content: start;
-    justify-content: start;
-  }
-  .#{$prefix}content-center {
-    align-content: center;
-    justify-content: center;
-  }
-  .#{$prefix}content-end {
-    align-content: end;
-    justify-content: end;
-  }
-  .#{$prefix}content-between {
-    align-content: space-between;
-    justify-content: space-between;
-  }
-  .#{$prefix}content-around {
-    align-content: space-around;
-    justify-content: space-around;
-  }
-
-  // Self (Child) - Handles Grid & Flex + Margins
-  .#{$prefix}self-left {
-    align-self: start;
-    place-self: start;
-    margin-inline-end: auto;
-  }
-  .#{$prefix}self-center {
-    align-self: center;
-    place-self: center;
-    margin-inline: auto;
-  }
-  .#{$prefix}self-right {
-    align-self: end;
-    place-self: end;
-    margin-inline-start: auto;
-  }
-  .#{$prefix}self-top {
-    align-self: start;
-    place-self: start;
-    margin-bottom: auto;
-  }
-  .#{$prefix}self-middle {
-    align-self: center;
-    place-self: center;
-    margin-block: auto;
-  }
-  .#{$prefix}self-bottom {
-    align-self: end;
-    place-self: end;
-    margin-top: auto;
-  }
-  .#{$prefix}self-stretch {
-    align-self: stretch;
-    place-self: stretch;
+  @each $class, $props in $alignment-classes {
+    .#{$class} {
+      @each $prop, $val in $props {
+        #{$prop}: #{$val};
+      }
+    }
   }
 }

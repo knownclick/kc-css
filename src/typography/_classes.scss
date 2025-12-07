@@ -1,12 +1,10 @@
 @use "sass:map";
 
-/* --- Class Generator Mixin --- */
-/* --- Class Generator Mixin --- */
-@mixin generate-classes($config, $prefix: "") {
+@mixin generate-classes($config) {
   // Generates: .text-2xs to .text-4xl
   @if map.get($config, "generate-type-classes") {
     @each $name, $step in map.get($config, "type-steps") {
-      .#{$prefix}text-#{$name} {
+      .text-#{$name} {
         font-size: var(--text-#{$name});
       }
     }
@@ -15,7 +13,7 @@
   // Generates: .font-100 to .font-900
   @if map.get($config, "generate-weight-classes") {
     @for $i from 1 through 9 {
-      .#{$prefix}font-#{$i}00 {
+      .font-#{$i}00 {
         font-weight: $i * 100;
       }
     }
@@ -23,7 +21,7 @@
 
   // Generates: .line-height-xs, .line-height-s, .line-height-m...
   @each $name, $value in map.get($config, "line-heights") {
-    .#{$prefix}line-height-#{$name} {
+    .line-height-#{$name} {
       line-height: $value;
     }
   }
@@ -31,7 +29,7 @@
   // Generates: .tracking-tight, .tracking-wide...
   @if map.get($config, "generate-tracking") {
     @each $name, $value in map.get($config, "letter-spacing") {
-      .#{$prefix}tracking-#{$name} {
+      .tracking-#{$name} {
         letter-spacing: $value;
       }
     }
@@ -39,16 +37,16 @@
 
   // Generates: .text-left, .text-center, .text-right, .text-justify
   @if map.get($config, "generate-alignment") {
-    .#{$prefix}text-left {
+    .text-left {
       text-align: left;
     }
-    .#{$prefix}text-center {
+    .text-center {
       text-align: center;
     }
-    .#{$prefix}text-right {
+    .text-right {
       text-align: right;
     }
-    .#{$prefix}text-justify {
+    .text-justify {
       text-align: justify;
     }
   }
@@ -56,35 +54,35 @@
   // Generates: .uppercase, .lowercase, .underline, .italic...
   @if map.get($config, "generate-transform") {
     // Transforms
-    .#{$prefix}uppercase {
+    .uppercase {
       text-transform: uppercase;
     }
-    .#{$prefix}lowercase {
+    .lowercase {
       text-transform: lowercase;
     }
-    .#{$prefix}capitalize {
+    .capitalize {
       text-transform: capitalize;
     }
-    .#{$prefix}normal-case {
+    .normal-case {
       text-transform: none;
     }
 
     // Decorations
-    .#{$prefix}underline {
+    .underline {
       text-decoration: underline;
     }
-    .#{$prefix}line-through {
+    .line-through {
       text-decoration: line-through;
     }
-    .#{$prefix}no-underline {
+    .no-underline {
       text-decoration: none;
     }
 
     // Style
-    .#{$prefix}italic {
+    .italic {
       font-style: italic;
     }
-    .#{$prefix}not-italic {
+    .not-italic {
       font-style: normal;
     }
   }
@@ -92,32 +90,32 @@
   // Generates: .truncate, .whitespace-*, .break-*
   @if map.get($config, "generate-truncate") {
     // Standard one-line truncation
-    .#{$prefix}truncate {
+    .truncate {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
     // Whitespace control
-    .#{$prefix}whitespace-nowrap {
+    .whitespace-nowrap {
       white-space: nowrap;
     }
-    .#{$prefix}whitespace-normal {
+    .whitespace-normal {
       white-space: normal;
     }
-    .#{$prefix}whitespace-pre {
+    .whitespace-pre {
       white-space: pre;
     }
 
     // Word breaking
-    .#{$prefix}break-normal {
+    .break-normal {
       overflow-wrap: normal;
       word-break: normal;
     }
-    .#{$prefix}break-words {
+    .break-words {
       overflow-wrap: break-word;
     }
-    .#{$prefix}break-all {
+    .break-all {
       word-break: break-all;
     }
   }

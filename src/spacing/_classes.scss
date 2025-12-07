@@ -1,64 +1,61 @@
 @use "sass:map";
-
-/* --- Utility Classes --- */
 @use "sass:list";
 
-/* --- Utility Classes --- */
-@mixin generate-classes($config, $prefix: "") {
+@mixin generate-classes($config) {
   @if map.get($config, "generate-space-utils") {
     $steps: map.keys(map.get($config, "space-steps"));
     $all-steps: list.join("0", $steps);
 
     @each $name in $all-steps {
-      // Generates: .gap-* (e.g., .gap-m)
-      .#{$prefix}gap-#{$name} {
+      // Generates: .gap-#{$name} (e.g., .gap-m)
+      .gap-#{$name} {
         gap: var(--space-#{$name});
       }
 
       // Generates: .p-*, .ph-*, .pv-*, .pt-*, .pb-*, .pl-*, .pr-*
-      .#{$prefix}p-#{$name} {
-        padding: var(--space-#{$name});
-      }
-      .#{$prefix}ph-#{$name} {
-        padding-inline: var(--space-#{$name});
-      }
-      .#{$prefix}pv-#{$name} {
-        padding-block: var(--space-#{$name});
-      }
-      .#{$prefix}pt-#{$name} {
-        padding-top: var(--space-#{$name});
-      }
-      .#{$prefix}pb-#{$name} {
-        padding-bottom: var(--space-#{$name});
-      }
-      .#{$prefix}pl-#{$name} {
-        padding-left: var(--space-#{$name});
-      }
-      .#{$prefix}pr-#{$name} {
-        padding-right: var(--space-#{$name});
+      $p-list: "p", "ph", "pv", "pt", "pb", "pl", "pr";
+      @each $p-type in $p-list {
+        $p-classname: "#{$p-type}-#{$name}";
+        .#{$p-classname} {
+          @if $p-type == "p" {
+            padding: var(--space-#{$name});
+          } @else if $p-type == "ph" {
+            padding-inline: var(--space-#{$name});
+          } @else if $p-type == "pv" {
+            padding-block: var(--space-#{$name});
+          } @else if $p-type == "pt" {
+            padding-top: var(--space-#{$name});
+          } @else if $p-type == "pb" {
+            padding-bottom: var(--space-#{$name});
+          } @else if $p-type == "pl" {
+            padding-left: var(--space-#{$name});
+          } @else if $p-type == "pr" {
+            padding-right: var(--space-#{$name});
+          }
+        }
       }
 
       // Generates: .m-*, .mh-*, .mv-*, .mt-*, .mb-*, .ml-*, .mr-*
-      .#{$prefix}m-#{$name} {
-        margin: var(--space-#{$name});
-      }
-      .#{$prefix}mh-#{$name} {
-        margin-inline: var(--space-#{$name});
-      }
-      .#{$prefix}mv-#{$name} {
-        margin-block: var(--space-#{$name});
-      }
-      .#{$prefix}mt-#{$name} {
-        margin-top: var(--space-#{$name});
-      }
-      .#{$prefix}mb-#{$name} {
-        margin-bottom: var(--space-#{$name});
-      }
-      .#{$prefix}ml-#{$name} {
-        margin-left: var(--space-#{$name});
-      }
-      .#{$prefix}mr-#{$name} {
-        margin-right: var(--space-#{$name});
+      $m-list: "m", "mh", "mv", "mt", "mb", "ml", "mr";
+      @each $m-type in $m-list {
+        $m-classname: "#{$m-type}-#{$name}";
+        .#{$m-classname} {
+          @if $m-type == "m" {
+            margin: var(--space-#{$name});
+          } @else if $m-type == "mh" {
+            margin-inline: var(--space-#{$name});
+          } @else if $m-type == "mv" {
+            margin-block: var(--space-#{$name});
+          } @else if $m-type == "mt" {
+            margin-top: var(--space-#{$name});
+          } @else if $m-type == "mb" {
+            margin-bottom: var(--space-#{$name});
+          } @else if $m-type == "ml" {
+            margin-left: var(--space-#{$name});
+          } @else if $m-type == "mr" {
+            margin-right: var(--space-#{$name});
+          }
+        }
       }
     }
   }

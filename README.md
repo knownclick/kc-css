@@ -1,6 +1,26 @@
 # kf-css
 
-A modern, efficient CSS framework tailored for SvelteKit.
+**Strictly designed for Svelte & SvelteKit.**
+
+A modern, efficient, and **Just-In-Time (JIT)** CSS framework tailored for SvelteKit.
+
+## The "Mirror" Responsive System
+
+kf-css uses a unique "Mirror" system to handle responsiveness without bloating your Sass compilation time.
+
+### How it works
+
+1.  **Sass Compilation**: core Sass files generate the base CSS (mobile-first utilities and components).
+2.  **The Mirror**: A post-processing script (`bin/mirror.js`) automatically generates responsive variants for **every single class** in your CSS.
+    - Input: `.p-4`
+    - Output: `.m:p-4`, `.l:p-4`, `.xl:p-4` (wrapped in appropriate media queries).
+3.  **Zero Config**: Any custom class you add (e.g. `.sexycard`) gets responsive variants for free (`.m:sexycard`).
+
+### Supported Breakpoints
+
+- **`m:`** (768px)
+- **`l:`** (992px)
+- **`xl:`** (1400px)
 
 ## Usage
 
@@ -19,21 +39,44 @@ npx kf-css
 
 ### 2. Import
 
-Import the main SCSS file.
+### SvelteKit Setup (Recommended)
 
-**SvelteKit** (`src/routes/+layout.svelte`):
+Since `kf-css` is scaffolded into your project, you must set up the build pipeline to generate the CSS.
+
+**1. Install Dependencies**
+You need `sass` to compile the core files.
+
+```bash
+npm install -D sass
+```
+
+**2. Add Build Scripts**
+In your project's `package.json`, add scripts to compile the styles and run the mirror.
+
+```json
+"scripts": {
+  "kf:build": "sass src/lib/kf-css/src/main.scss src/lib/kf-css/dist/kf.css && node src/lib/kf-css/bin/mirror.js src/lib/kf-css/dist/kf.css src/lib/kf-css/dist/kf-responsive.css",
+  "kf:watch": "onchange 'src/lib/kf-css/src/**/*.scss' -- npm run kf:build"
+}
+```
+
+_(Optional: Install `onchange` via `npm i -D onchange` for the watch script)_
+
+**3. Import CSS**
+In `src/routes/+layout.svelte` (or your root layout):
 
 ```svelte
 <script>
-  import '$lib/kf-css/main.scss';
+  import '$lib/kf-css/dist/kf-responsive.css';
 </script>
 ```
 
-**Other Javascript/Bundlers**:
+**4. Development Workflow**
+When you edit files in `src/lib/kf-css/config`, run `npm run kf:build` (or start the watcher) to regenerate your styles.
 
-```js
-import "./kf-css/main.scss"; // Adjust path as needed
-```
+---
+
+### Other Frameworks
 
 ## Customization
 

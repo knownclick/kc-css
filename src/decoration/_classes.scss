@@ -1,33 +1,32 @@
 @use "sass:map";
 @use "sass:math";
 
-/* --- Utility Classes --- */
-@mixin generate-classes($config, $prefix: "") {
+@mixin generate-classes($config) {
   // Generates: .radius-*, .radius-t-*, .radius-full...
   @if map.get($config, "generate-radius") {
     @each $name, $step in map.get($config, "radius-steps") {
-      .#{$prefix}radius-#{$name} {
+      .radius-#{$name} {
         border-radius: var(--radius-#{$name});
       }
       // Side Specific
-      .#{$prefix}radius-t-#{$name} {
+      .radius-t-#{$name} {
         border-top-left-radius: var(--radius-#{$name});
         border-top-right-radius: var(--radius-#{$name});
       }
-      .#{$prefix}radius-b-#{$name} {
+      .radius-b-#{$name} {
         border-bottom-left-radius: var(--radius-#{$name});
         border-bottom-right-radius: var(--radius-#{$name});
       }
-      .#{$prefix}radius-l-#{$name} {
+      .radius-l-#{$name} {
         border-top-left-radius: var(--radius-#{$name});
         border-bottom-left-radius: var(--radius-#{$name});
       }
-      .#{$prefix}radius-r-#{$name} {
+      .radius-r-#{$name} {
         border-top-right-radius: var(--radius-#{$name});
         border-bottom-right-radius: var(--radius-#{$name});
       }
     }
-    .#{$prefix}radius-full {
+    .radius-full {
       border-radius: var(--radius-full);
     }
   }
@@ -35,7 +34,7 @@
   // Generates: .shadow-s, .shadow-m, .shadow-l...
   @if map.get($config, "generate-shadows") {
     @each $name, $value in map.get($config, "shadows") {
-      .#{$prefix}shadow-#{$name} {
+      .shadow-#{$name} {
         box-shadow: var(--shadow-#{$name});
       }
     }
@@ -43,22 +42,22 @@
 
   // Generates: .border, .border-top, .border-none...
   @if map.get($config, "generate-borders") {
-    .#{$prefix}border {
+    .border {
       border: 1px solid;
     }
-    .#{$prefix}border-top {
+    .border-top {
       border-top: 1px solid;
     }
-    .#{$prefix}border-bottom {
+    .border-bottom {
       border-bottom: 1px solid;
     }
-    .#{$prefix}border-left {
+    .border-left {
       border-left: 1px solid;
     }
-    .#{$prefix}border-right {
+    .border-right {
       border-right: 1px solid;
     }
-    .#{$prefix}border-none {
+    .border-none {
       border: none;
     }
   }
@@ -71,28 +70,28 @@
       $loops: math.floor(math.div(100, $step));
     }
 
-    .#{$prefix}opacity-0 {
+    .opacity-0 {
       opacity: 0;
     }
-    .#{$prefix}opacity-100 {
+    .opacity-100 {
       opacity: 1;
     }
 
     @if $step > 0 {
       @for $i from 1 through ($loops - 1) {
         $pct: $i * $step;
-        .#{$prefix}opacity-#{$pct} {
+        .opacity-#{$pct} {
           opacity: math.div($pct, 100);
         }
       }
       // Explicitly add common quarters if not generated
-      .#{$prefix}opacity-25 {
+      .opacity-25 {
         opacity: 0.25;
       }
-      .#{$prefix}opacity-50 {
+      .opacity-50 {
         opacity: 0.5;
       }
-      .#{$prefix}opacity-75 {
+      .opacity-75 {
         opacity: 0.75;
       }
     }
@@ -101,7 +100,7 @@
   // Generates: .aspect-square, .aspect-video...
   @if map.get($config, "generate-aspect") {
     @each $name, $value in map.get($config, "aspect-ratios") {
-      .#{$prefix}aspect-#{$name} {
+      .aspect-#{$name} {
         aspect-ratio: $value;
       }
     }
@@ -109,19 +108,19 @@
 
   // Generates: .fit-contain, .fit-cover, .fit-fill...
   @if map.get($config, "generate-fit") {
-    .#{$prefix}fit-contain {
+    .fit-contain {
       object-fit: contain;
     }
-    .#{$prefix}fit-cover {
+    .fit-cover {
       object-fit: cover;
     }
-    .#{$prefix}fit-fill {
+    .fit-fill {
       object-fit: fill;
     }
-    .#{$prefix}fit-none {
+    .fit-none {
       object-fit: none;
     }
-    .#{$prefix}fit-scale-down {
+    .fit-scale-down {
       object-fit: scale-down;
     }
   }
@@ -129,7 +128,7 @@
   // Generates: .bg-blur-s, .bg-blur-m...
   @if map.get($config, "generate-blur") {
     @each $name, $value in map.get($config, "blurs") {
-      .#{$prefix}bg-blur-#{$name} {
+      .bg-blur-#{$name} {
         backdrop-filter: blur($value);
       }
     }
@@ -138,7 +137,7 @@
   // Generates: .blur-*, .grayscale-* (from filters map)
   @if map.get($config, "generate-filters") {
     @each $name, $value in map.get($config, "filters") {
-      .#{$prefix}#{$name} {
+      .#{$name} {
         filter: $value;
       }
     }

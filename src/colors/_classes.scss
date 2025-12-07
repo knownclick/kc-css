@@ -1,9 +1,6 @@
 @use "sass:map";
 @use "sass:math";
 
-/* =========================================
-   MIXIN: Utility Generator
-   ========================================= */
 @mixin generate-utils($name, $config) {
   $step: map.get($config, "transparency-step");
   // Only calculate loops if step is greater than 0

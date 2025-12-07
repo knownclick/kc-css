@@ -1,4 +1,5 @@
 @use "sass:map";
+@use "sass:meta";
 
 // Config
 @use "config/colors" as config-colors;
@@ -8,7 +9,9 @@
 @use "config/decoration" as config-decoration;
 @use "config/components" as config-components;
 @use "config/transitions" as config-transitions;
+
 @use "config/custom" as config-custom;
+@use "config/mixins" as mixins; // [NEW] Mixins for JIT
 
 // Modules
 @use "colors/variables" as color-vars;
@@ -197,26 +200,3 @@ $layout-class-config: (
   "order-count": config-layout.$order-count,
 );
 @include layout-classes.generate-classes($layout-class-config);
-
-// 7. Responsive Loop
-@each $name, $width in config-layout.$breakpoints {
-  @media (min-width: #{$width}) {
-    @include layout-classes.generate-classes(
-      $layout-class-config,
-      "#{$name}\\:"
-    );
-    @include type-classes.generate-classes($type-class-config, "#{$name}\\:");
-    @include spacing-classes.generate-classes(
-      $spacing-class-config,
-      "#{$name}\\:"
-    );
-    @include decoration-classes.generate-classes(
-      $decoration-class-config,
-      "#{$name}\\:"
-    );
-    @include transition-classes.generate-classes(
-      $transition-class-config,
-      "#{$name}\\:"
-    );
-  }
-}
