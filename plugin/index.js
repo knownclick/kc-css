@@ -24,6 +24,13 @@ export function kfCss(options = {}) {
   return {
     name: "kf-css-automator",
 
+    // 0. Resolve the virtual import to the actual file
+    resolveId(id) {
+      if (id === "virtual:kf-css") {
+        return path.resolve(process.cwd(), config.outDir, "kf-responsive.css");
+      }
+    },
+
     // 1. Build on server start (Development)
     async buildStart() {
       try {
