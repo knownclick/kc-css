@@ -10,17 +10,27 @@ import { build } from "./builder.js";
  * 3. Generates Responsive -> kf-responsive.css
  */
 export function kfCss(options = {}) {
-  // Detect environment (SvelteKit vs Standard)
+  // Detect environment (SvelteKit vs Standard vs Local Dev)
   const root = process.cwd();
-  // We can loosely detect SvelteKit by looking for svelte.config.js, or just default to the lib folder structure
-  // For simplicity and robustness given the CLI changes, we'll try to support both standard defaults.
-
-  // Actually, to fully "remove option", we should likely stick to what the CLI enforces.
-  // The CLI adheres to: SvelteKit -> src/lib/kf-css, Others -> kf-css.
 
   let baseDir = "kf-css";
+
+  // Check if we are in a SvelteKit project
   if (fs.existsSync(path.resolve(root, "svelte.config.js"))) {
     baseDir = "src/lib/kf-css";
+  }
+
+  // Check if we are developing the library locally (kf-css repo)
+  try {
+    const pkgPath = path.resolve(root, "package.json");
+    if (fs.existsSync(pkgPath)) {
+      const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
+      if (pkg.name === "kf-css") {
+        baseDir = ".";
+      }
+    }
+  } catch (e) {
+    // Ignore error, fallback to defaults
   }
 
   const defaults = {
@@ -59,18 +69,27 @@ export function kfCss(options = {}) {
       const watcher = server.watcher;
       const root = process.cwd();
 
+      // Resolve the watch pattern to a directory path for checking
+      const watchPathAbs = path.resolve(root, config.watch);
+      // Remove glob patterns to get the base directory
+      // e.g. /path/to/src/**/*.scss -> /path/to/src
+      const watchDir = watchPathAbs
+        .substring(0, watchPathAbs.indexOf("*"))
+        .replace(/[/\\]$/, "");
+
       // Add watch pattern
-      watcher.add(path.resolve(root, config.watch));
+      watcher.add(watchPathAbs);
+
+      console.log(`[kf-css] Watching: ${watchPathAbs}`);
 
       watcher.on("change", async (file) => {
-        // Check if the modified file matches our watch scope
-        // We normalize paths to forward slashes for easier comparison
+        // Normalize file path
         const normalizedFile = file.split(path.sep).join("/");
+        const normalizedWatchDir = watchDir.split(path.sep).join("/");
 
-        // Simple check: is it in the kf-css src folder?
-        // You might want a stronger check using glob matching if needed
+        // Check if the modified file is within our watch directory and is an SCSS file
         if (
-          normalizedFile.includes("kf-css/src") &&
+          normalizedFile.startsWith(normalizedWatchDir) &&
           normalizedFile.endsWith(".scss")
         ) {
           console.log(`[kf-css] Change detected: ${path.basename(file)}`);
@@ -86,6 +105,7 @@ export function kfCss(options = {}) {
             // We invalidate the generated CSS file so Vite reloads it
             const cssFile = path.resolve(outPath, "kf-responsive.css");
             const mod = server.moduleGraph.getModuleById(cssFile);
+
             if (mod) {
               server.moduleGraph.invalidateModule(mod);
               server.ws.send({
@@ -93,6 +113,16 @@ export function kfCss(options = {}) {
                 path: "*",
               });
               console.log("[kf-css] HMR Update triggered.");
+            } else {
+              // Try to find module by URL if ID lookup failed (Vite idiosyncrasies)
+              // Or just force a reload anyway
+              server.ws.send({
+                type: "full-reload",
+                path: "*",
+              });
+              console.log(
+                "[kf-css] HMR Update triggered (Module not found in graph)."
+              );
             }
           } catch (e) {
             console.error("[kf-css] Rebuild failed:", e.message);
