@@ -77,19 +77,35 @@ export function kfCss(options = {}) {
         .substring(0, watchPathAbs.indexOf("*"))
         .replace(/[/\\]$/, "");
 
+      let realWatchDir = watchDir;
+      try {
+        realWatchDir = fs.realpathSync(watchDir);
+      } catch (e) {
+        // failed to resolve, maybe not a symlink or doesn't exist yet
+      }
+
       // Add watch pattern
       watcher.add(watchPathAbs);
 
       console.log(`[kf-css] Watching: ${watchPathAbs}`);
+      if (realWatchDir !== watchDir) {
+        console.log(`[kf-css] Resolved watch path: ${realWatchDir}`);
+      }
 
       watcher.on("change", async (file) => {
         // Normalize file path
         const normalizedFile = file.split(path.sep).join("/");
         const normalizedWatchDir = watchDir.split(path.sep).join("/");
+        const normalizedRealWatchDir = realWatchDir.split(path.sep).join("/");
 
-        // Check if the modified file is within our watch directory and is an SCSS file
+        // Check if the modified file is within our watch directory (or its real path) and is an SCSS file
+        const inWatchDir = normalizedFile.startsWith(normalizedWatchDir);
+        const inRealWatchDir = normalizedFile.startsWith(
+          normalizedRealWatchDir
+        );
+
         if (
-          normalizedFile.startsWith(normalizedWatchDir) &&
+          (inWatchDir || inRealWatchDir) &&
           normalizedFile.endsWith(".scss")
         ) {
           console.log(`[kf-css] Change detected: ${path.basename(file)}`);
