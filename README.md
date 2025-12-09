@@ -15,7 +15,7 @@ _Semantic. Customizable. Lightweight (with PurgeCSS)._
 
 - **SvelteKit First**: Designed with SvelteKit's architecture in mind.
 - **Automated**: Custom Vite plugin updates styles instantly as you edit.
-- **Responsive**: Mirror utility that automatically generates responsive variants (e.g. `.m:p-4`).
+- **Responsive**: Mirror utility that automatically generates responsive variants (e.g. `.m:p-m`).
 - **Semantic**: Built on a solid design system of colors, typography, and spacing.
 - **Customizable**: Built with Sass, easily configured via variables.
 
