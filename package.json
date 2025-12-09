@@ -1,6 +1,6 @@
 {
   "name": "kf-css",
-  "version": "1.6.7",
+  "version": "1.6.8",
   "description": "A modern, efficient CSS framework tailored for SvelteKit.",
   "main": "plugin/index.js",
   "types": "plugin/index.d.ts",

@@ -143,17 +143,36 @@ export function kfCss(options = {}) {
         const normalizedWatchDir = watchDir.split(path.sep).join("/");
         const normalizedRealWatchDir = realWatchDir.split(path.sep).join("/");
 
+        // Debug Log: See what the watcher is actually seeing
+        console.log(`[kf-css-debug] File changed: ${normalizedFile}`);
+        console.log(`[kf-css-debug] Checking against:`);
+        console.log(`             - WatchDir: ${normalizedWatchDir}`);
+        console.log(`             - RealDir:  ${normalizedRealWatchDir}`);
+
+        // CASING FIX: Windows paths can be inconsistent (C: vs c:).
+        // We convert everything to lowercase for the check if on Windows.
+        const isWindows = process.platform === "win32";
+
+        const fileToCheck = isWindows
+          ? normalizedFile.toLowerCase()
+          : normalizedFile;
+        const watchDirCheck = isWindows
+          ? normalizedWatchDir.toLowerCase()
+          : normalizedWatchDir;
+        const realWatchDirCheck = isWindows
+          ? normalizedRealWatchDir.toLowerCase()
+          : normalizedRealWatchDir;
+
         // Check if the modified file is within our watch directory (or its real path) and is an SCSS file
-        const inWatchDir = normalizedFile.startsWith(normalizedWatchDir);
-        const inRealWatchDir = normalizedFile.startsWith(
-          normalizedRealWatchDir
-        );
+        const inWatchDir = fileToCheck.startsWith(watchDirCheck);
+        const inRealWatchDir = fileToCheck.startsWith(realWatchDirCheck);
 
         if (
           (inWatchDir || inRealWatchDir) &&
           normalizedFile.endsWith(".scss")
         ) {
           console.log(`[kf-css] Change detected: ${path.basename(file)}`);
+          // ...
 
           try {
             const entryPath = path.resolve(root, config.entry);
