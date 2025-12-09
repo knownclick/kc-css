@@ -14,14 +14,14 @@ _Semantic. Customizable. Lightweight (with PurgeCSS)._
 ## 🚀 Features
 
 - **SvelteKit First**: Designed with SvelteKit's architecture in mind.
-- **Automated**: Custom Vite plugin updates styles instantly as you edit.
+- **Automated Build**: Custom Vite plugin compiles your Sass automatically on server start.
 - **Responsive**: Mirror utility that automatically generates responsive variants (e.g. `.m:p-m`).
 - **Semantic**: Built on a solid design system of colors, typography, and spacing.
 - **Customizable**: Built with Sass, easily configured via variables.
 
 ---
 
-## � Complete Workflow
+## 🏁 Complete Workflow
 
 ### 1. Install & Setup
 
@@ -48,7 +48,7 @@ npx kf-css
 
 ### 2. Import
 
-Add this single line to `src/routes/+layout.svelte`:
+Add this single line to the top of your `src/routes/+layout.svelte` (or specific layout group):
 
 ```javascript
 import "virtual:kf-css";
@@ -62,7 +62,8 @@ Start your server:
 npm run dev
 ```
 
-The plugin watches `src/lib/kf-css` and instant-updates your CSS when you edit config files.
+The plugin compiles your `src/lib/kf-css` settings into CSS **once** when the server starts.
+**Note:** If you change your Sass configuration (colors, spacing, etc.), you must **restart the server** to see the changes.
 
 ### 4. Build (Production)
 
