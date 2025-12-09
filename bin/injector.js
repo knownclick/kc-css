@@ -5,9 +5,27 @@ function injectViteConfig(rootPath, config = {}) {
   // 1. Try to find the file
   let viteFile = path.join(rootPath, "vite.config.js");
   if (!fs.existsSync(viteFile)) {
-    viteFile = path.join(rootPath, "vite.config.ts");
-    if (!fs.existsSync(viteFile)) {
-      return { success: false, reason: "No vite.config.js or .ts found" };
+    const viteTsFile = path.join(rootPath, "vite.config.ts");
+    if (fs.existsSync(viteTsFile)) {
+      viteFile = viteTsFile;
+    } else {
+      // File doesn't exist, create it
+      const defaultContent = `import { defineConfig } from 'vite';
+import { kfCss } from 'kf-css';
+
+export default defineConfig({
+  plugins: [kfCss()]
+});
+`;
+      try {
+        fs.writeFileSync(viteFile, defaultContent);
+        return { success: true, file: "vite.config.js (created)" };
+      } catch (e) {
+        return {
+          success: false,
+          reason: "Failed to create vite.config.js: " + e.message,
+        };
+      }
     }
   }
 

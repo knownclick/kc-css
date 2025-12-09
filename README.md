@@ -35,6 +35,17 @@ npx kf-css
 - `npm install`: Downloads the framework.
 - `npx kf-css`: Scaffolds `src/lib/kf-css` and **automatically updates** `vite.config.js`.
 
+> **Note:** If `vite.config.js` is missing, it will be automatically created with the default configuration:
+>
+> ```javascript
+> import { defineConfig } from "vite";
+> import { kfCss } from "kf-css";
+>
+> export default defineConfig({
+>   plugins: [kfCss()],
+> });
+> ```
+
 ### 2. Import
 
 Add this single line to `src/routes/+layout.svelte`:
