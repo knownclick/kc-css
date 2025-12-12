@@ -5,3 +5,7 @@ export { default as Tabs } from './Tabs.svelte';
 export { default as TabHeader } from './TabHeader.svelte';
 export { default as TabPanel } from './TabPanel.svelte';
 export { default as Alert } from './Alert.svelte';
+export { default as Drawer } from './Drawer.svelte';
+export { default as Switch } from './Switch.svelte';
+export { default as Badge } from './Badge.svelte';
+export { default as Dropdown } from './Dropdown.svelte';

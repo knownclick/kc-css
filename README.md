@@ -117,12 +117,20 @@ The framework is configured via Sass variables in `src/config/`.
 
 The `plugin/builder.js` logic reads your CSS variables (specifically `--breakpoint-*`) to generate responsive classes.
 
-## ✨ New in v1.8.0
+## ✨ New in v1.9.0
 
-### 🧩 Core UI Components
+### 🚀 Phase 2 Components
 
-We've added a set of headless, fully responsive Svelte components: `Accordion`, `Modal`, `Tabs`, and `Alert`.
-Built with `kf-css` classes, they are lightweight, accessible, and easily customizable.
+We've expanded the UI kit with interactive essentials:
+
+- **Drawer**: Responsive offcanvas sidebar.
+- **Dropdown**: Simple context menus.
+- **Switch**: Accessible boolean toggles.
+- **Badge**: Status indicators.
+
+### 🧩 Core UI Components (v1.8.0)
+
+Previously added: `Accordion`, `Modal`, `Tabs`, `Alert`.
 
 ### 📐 Core Utilities
 
@@ -222,6 +230,35 @@ import {
 
 ```svelte
 <Alert type="info" title="Note">This is an alert.</Alert>
+```
+
+**Drawer**
+
+```svelte
+<Drawer bind:open={isOpen} position="right">
+  <div class="p-m">Drawer Content</div>
+</Drawer>
+```
+
+**Dropdown**
+
+```svelte
+<Dropdown label="Menu">
+  <a href="#" class="block p-s hover:bg-muted-10">Option 1</a>
+  <button class="block p-s hover:bg-muted-10">Option 2</button>
+</Dropdown>
+```
+
+**Switch**
+
+```svelte
+<Switch bind:checked={isEnabled}>Enable Feature</Switch>
+```
+
+**Badge**
+
+```svelte
+<Badge variant="success" pill>Active</Badge>
 ```
 
 ---
